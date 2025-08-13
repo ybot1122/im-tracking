@@ -28,6 +28,7 @@ export default function HomeScreen() {
     const newMeal: Meal = {
       id: Date.now().toString(),
       name: `Meal ${currentMeals.length + 1}`,
+      foods: [],
     };
 
     setMealsByDate((prev) => ({
