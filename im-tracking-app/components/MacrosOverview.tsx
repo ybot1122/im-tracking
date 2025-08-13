@@ -70,7 +70,7 @@ function MacroCircle({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 0,
     backgroundColor: "transparent",
   },
   circlesRow: {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#4f8cff",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 0,
   },
   circleValue: {
     fontSize: 12,
@@ -101,14 +101,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
     textAlign: "center",
-    marginTop: 2,
+    marginTop: 0,
   },
   circleLabel: {
     fontSize: 12,
     fontWeight: "600",
     color: "#333",
     textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 0,
   },
   circlePercent: {
     fontSize: 12,
