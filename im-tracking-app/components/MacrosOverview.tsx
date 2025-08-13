@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { ThemedView } from "./structure/ThemedView";
+import { ThemedText } from "./structure/ThemedText";
 
 const SODIUM = 1800; // mg
 const SODIUM_GOAL = 2300; // mg
@@ -15,8 +17,8 @@ function getPercent(current: number, goal: number) {
 
 export function MacrosOverview() {
   return (
-    <View style={styles.container}>
-      <View style={styles.circlesRow}>
+    <ThemedView style={styles.container}>
+      <ThemedView style={styles.circlesRow}>
         <MacroCircle
           label="Sodium"
           value={SODIUM}
@@ -35,8 +37,8 @@ export function MacrosOverview() {
           goal={CALORIES_GOAL}
           unit="kcal"
         />
-      </View>
-    </View>
+      </ThemedView>
+    </ThemedView>
   );
 }
 
@@ -53,16 +55,16 @@ function MacroCircle({
 }) {
   const percent = getPercent(value, goal);
   return (
-    <View style={styles.circleContainer}>
-      <View style={styles.circle}>
-        <Text style={styles.circleValue}>
+    <ThemedView style={styles.circleContainer}>
+      <ThemedView style={styles.circle}>
+        <ThemedText style={styles.circleValue}>
           {value} / {goal}
-        </Text>
-        <Text style={styles.circleUnit}>{unit}</Text>
-      </View>
-      <Text style={styles.circleLabel}>{label}</Text>
-      <Text style={styles.circlePercent}>{percent}%</Text>
-    </View>
+        </ThemedText>
+        <ThemedText style={styles.circleUnit}>{unit}</ThemedText>
+      </ThemedView>
+      <ThemedText style={styles.circleLabel}>{label}</ThemedText>
+      <ThemedText style={styles.circlePercent}>{percent}%</ThemedText>
+    </ThemedView>
   );
 }
 
