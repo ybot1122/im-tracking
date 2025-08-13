@@ -60,12 +60,12 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView>
       <DayPicker onDateChange={handleDateChange} />
+      <MacrosOverview />
       <MealManager
         meals={currentMeals}
         onAddMeal={handleAddMeal}
         onDeleteMeal={handleDeleteMeal}
       />
-      <MacrosOverview />
     </ParallaxScrollView>
   );
 }
