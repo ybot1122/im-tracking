@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { ThemedText } from "./structure/ThemedText";
 import { ThemedView } from "./structure/ThemedView";
@@ -22,7 +22,11 @@ function isToday(date: Date) {
   );
 }
 
-export function DayPicker() {
+interface DayPickerProps {
+  onDateChange?: (date: Date) => void;
+}
+
+export function DayPicker({ onDateChange }: DayPickerProps) {
   const [selectedDate, setSelectedDate] = useState(() => {
     // Start with today's date (local time, no time component)
     const now = new Date();
@@ -33,14 +37,26 @@ export function DayPicker() {
     setSelectedDate((prev) => {
       const newDate = new Date(prev);
       newDate.setDate(prev.getDate() + delta);
+      onDateChange?.(newDate);
       return newDate;
     });
   };
 
   const goToToday = () => {
     const now = new Date();
-    setSelectedDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+    const todayDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
+    setSelectedDate(todayDate);
+    onDateChange?.(todayDate);
   };
+
+  // Call onDateChange when component mounts with initial date
+  useEffect(() => {
+    onDateChange?.(selectedDate);
+  }, []);
 
   return (
     <ThemedView style={styles.container}>
