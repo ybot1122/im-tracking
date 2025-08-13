@@ -16,7 +16,7 @@ export default function FoodSelectionModal({
 }: {
   isVisible: boolean;
   onRequestClose: (val: boolean) => void;
-  onFoodSelect?: (food: FoodItem) => void;
+  onFoodSelect: (food: FoodItem) => void;
 }) {
   const handleFoodSelect = (food: FoodItem) => {
     if (onFoodSelect) {

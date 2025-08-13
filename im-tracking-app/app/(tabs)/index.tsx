@@ -58,6 +58,23 @@ export default function HomeScreen() {
     [currentDateKey]
   );
 
+  const handleUpdateMeal = useCallback(
+    (mealId: string, updatedMeal: Meal) => {
+      setMealsByDate((prev) => {
+        const currentMeals = prev[currentDateKey] || [];
+        const updatedMeals = currentMeals.map((meal) =>
+          meal.id === mealId ? updatedMeal : meal
+        );
+
+        return {
+          ...prev,
+          [currentDateKey]: updatedMeals,
+        };
+      });
+    },
+    [currentDateKey]
+  );
+
   return (
     <ParallaxScrollView>
       <DayPicker onDateChange={handleDateChange} />
@@ -66,6 +83,7 @@ export default function HomeScreen() {
         meals={currentMeals}
         onAddMeal={handleAddMeal}
         onDeleteMeal={handleDeleteMeal}
+        onUpdateMeal={handleUpdateMeal}
       />
     </ParallaxScrollView>
   );

@@ -16,14 +16,42 @@ interface MealManagerProps {
   meals: Meal[];
   onAddMeal: () => void;
   onDeleteMeal: (mealId: string) => void;
+  onUpdateMeal: (mealId: string, updatedMeal: Meal) => void;
 }
 
 export function MealManager({
   meals,
   onAddMeal,
   onDeleteMeal,
+  onUpdateMeal,
 }: MealManagerProps) {
   const [isFoodModalVisible, setIsFoodModalVisible] = useState(false);
+  const [currentMealId, setCurrentMealId] = useState<string | null>(null);
+
+  const handleLogFood = (mealId: string) => {
+    setCurrentMealId(mealId);
+    setIsFoodModalVisible(true);
+  };
+
+  const handleFoodSelect = (food: FoodItem) => {
+    if (currentMealId) {
+      const currentMeal = meals.find((meal) => meal.id === currentMealId);
+      if (currentMeal) {
+        const updatedMeal = {
+          ...currentMeal,
+          foods: [...currentMeal.foods, food],
+        };
+        onUpdateMeal(currentMealId, updatedMeal);
+      }
+    }
+    setIsFoodModalVisible(false);
+    setCurrentMealId(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsFoodModalVisible(false);
+    setCurrentMealId(null);
+  };
 
   return (
     <ThemedView style={styles.container}>
@@ -36,7 +64,7 @@ export function MealManager({
       ) : (
         <ThemedView style={styles.mealsList}>
           {meals.map((meal) => (
-            <Meal mealName={meal.name} foods={meal.foods}>
+            <Meal key={meal.id} mealName={meal.name} foods={meal.foods}>
               <TouchableOpacity
                 onPress={() => onDeleteMeal(meal.id)}
                 style={styles.deleteButton}
@@ -45,9 +73,9 @@ export function MealManager({
                 <ThemedText style={styles.deleteButtonText}>×</ThemedText>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setIsFoodModalVisible(true)}
+                onPress={() => handleLogFood(meal.id)}
                 style={styles.logFoodButton}
-                accessibilityLabel={`Log food for meal`}
+                accessibilityLabel={`Log food for ${meal.name}`}
               >
                 <ThemedText style={styles.logFoodButtonText}>
                   Log Food
@@ -70,7 +98,8 @@ export function MealManager({
       {/* Food Selection Modal */}
       <FoodSelectionModal
         isVisible={isFoodModalVisible}
-        onRequestClose={(val: boolean) => setIsFoodModalVisible(val)}
+        onRequestClose={handleCloseModal}
+        onFoodSelect={handleFoodSelect}
       />
     </ThemedView>
   );
