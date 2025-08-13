@@ -11,8 +11,11 @@ type Props = PropsWithChildren<{
 
 export default function Meal({ children, mealName, foods }: Props) {
   return (
-    <ThemedView style={styles.mealItem}>
-      <ThemedText style={styles.mealName}>{mealName}</ThemedText>
+    <ThemedView style={styles.container}>
+      <ThemedView style={styles.title}>
+        <ThemedText style={styles.mealName}>{mealName}</ThemedText>
+        {children}
+      </ThemedView>
       <ThemedView style={{ flex: 1, marginLeft: 16 }}>
         {foods.length === 0 ? (
           <ThemedText style={{ color: "#888", fontStyle: "italic" }}>
@@ -40,21 +43,19 @@ export default function Meal({ children, mealName, foods }: Props) {
           </ThemedView>
         )}
       </ThemedView>
-      {children}
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  mealItem: {
+  container: {
+    padding: 16,
+    backgroundColor: "#f8f9fa",
+  },
+  title: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
-    backgroundColor: "#f8f9fa",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#e9ecef",
   },
   mealName: {
     fontSize: 16,
