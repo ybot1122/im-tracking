@@ -6,7 +6,7 @@ import ParallaxScrollView from "@/components/structure/ParallaxScrollView";
 import { ThemedText } from "@/components/structure/ThemedText";
 import { ThemedView } from "@/components/structure/ThemedView";
 
-export default function HomeScreen() {
+export default function TempScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
