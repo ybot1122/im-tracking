@@ -5,10 +5,12 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/structure/ParallaxScrollView";
 import { ThemedText } from "@/components/structure/ThemedText";
 import { ThemedView } from "@/components/structure/ThemedView";
+import MacrosOverview from "@/components/MacrosOverview";
 
 export default function HomeScreen() {
   return (
     <ParallaxScrollView>
+      <MacrosOverview />
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
