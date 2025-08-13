@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 import { ThemedText } from "./structure/ThemedText";
 import { ThemedView } from "./structure/ThemedView";
 import { PropsWithChildren } from "react";
@@ -8,6 +8,20 @@ type Props = PropsWithChildren<{
   mealName: string;
   foods: FoodItem[];
 }>;
+
+const renderFoodItem = ({ item }: { item: FoodItem }) => (
+  <ThemedView style={{ flexDirection: "row", marginBottom: 2 }}>
+    <ThemedText style={{ width: 100 }}>{item.name}</ThemedText>
+    <ThemedText style={{ width: 60 }}>{item.calories}</ThemedText>
+  </ThemedView>
+);
+
+const renderHeader = () => (
+  <ThemedView style={{ flexDirection: "row", marginBottom: 4 }}>
+    <ThemedText style={{ width: 100, fontWeight: "bold" }}>Food</ThemedText>
+    <ThemedText style={{ width: 60, fontWeight: "bold" }}>Cals</ThemedText>
+  </ThemedView>
+);
 
 export default function Meal({ children, mealName, foods }: Props) {
   return (
@@ -22,25 +36,14 @@ export default function Meal({ children, mealName, foods }: Props) {
             No foods added
           </ThemedText>
         ) : (
-          <ThemedView>
-            <ThemedView style={{ flexDirection: "row", marginBottom: 4 }}>
-              <ThemedText style={{ width: 100, fontWeight: "bold" }}>
-                Food
-              </ThemedText>
-              <ThemedText style={{ width: 60, fontWeight: "bold" }}>
-                Cals
-              </ThemedText>
-            </ThemedView>
-            {foods.map((food) => (
-              <ThemedView
-                key={food.id}
-                style={{ flexDirection: "row", marginBottom: 2 }}
-              >
-                <ThemedText style={{ width: 100 }}>{food.name}</ThemedText>
-                <ThemedText style={{ width: 60 }}>{food.calories}</ThemedText>
-              </ThemedView>
-            ))}
-          </ThemedView>
+          <FlatList
+            data={foods}
+            renderItem={renderFoodItem}
+            keyExtractor={(item) => item.id}
+            ListHeaderComponent={renderHeader}
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={foods.length > 5}
+          />
         )}
       </ThemedView>
     </ThemedView>
