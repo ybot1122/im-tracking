@@ -2,38 +2,43 @@ import { StyleSheet } from "react-native";
 import { ThemedView } from "./structure/ThemedView";
 import { ThemedText } from "./structure/ThemedText";
 
-const SODIUM = 1800; // mg
 const SODIUM_GOAL = 2300; // mg
-
-const PROTEIN = 90; // g
 const PROTEIN_GOAL = 120; // g
-
-const CALORIES = 1850; // kcal
 const CALORIES_GOAL = 2200; // kcal
+
+interface MacrosOverviewProps {
+  calories: number;
+  protein: number;
+  sodium: number;
+}
 
 function getPercent(current: number, goal: number) {
   return Math.min(100, Math.round((current / goal) * 100));
 }
 
-export function MacrosOverview() {
+export function MacrosOverview({
+  calories,
+  protein,
+  sodium,
+}: MacrosOverviewProps) {
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.circlesRow}>
         <MacroCircle
           label="Calories"
-          value={CALORIES}
+          value={calories}
           goal={CALORIES_GOAL}
           unit="kcal"
         />
         <MacroCircle
           label="Protein"
-          value={PROTEIN}
+          value={protein}
           goal={PROTEIN_GOAL}
           unit="g"
         />
         <MacroCircle
           label="Sodium"
-          value={SODIUM}
+          value={sodium}
           goal={SODIUM_GOAL}
           unit="mg"
         />
