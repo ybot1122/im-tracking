@@ -136,6 +136,21 @@ export default function FoodSelectionModal({
                   placeholderTextColor="#999"
                   autoFocus={true}
                 />
+                {selectedFood && (
+                  <ThemedView style={styles.servingAmountContainer}>
+                    <ThemedText style={styles.servingAmountText}>
+                      Total Amount:{" "}
+                      {(() => {
+                        const servingsNum = parseFloat(servings);
+                        if (isNaN(servingsNum) || servingsNum <= 0) return "0";
+                        const totalValue = (
+                          servingsNum * selectedFood.servingSize.value
+                        ).toFixed(1);
+                        return `${totalValue} ${selectedFood.servingSize.unit}`;
+                      })()}
+                    </ThemedText>
+                  </ThemedView>
+                )}
               </ThemedView>
 
               <ThemedView style={styles.servingModalButtons}>
@@ -293,10 +308,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#333",
   },
-  servingHint: {
-    fontSize: 14,
-    color: "#999",
-    marginTop: 5,
+
+  servingAmountContainer: {
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#e9ecef",
+  },
+  servingAmountText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
   },
   servingModalButtons: {
     flexDirection: "row",
