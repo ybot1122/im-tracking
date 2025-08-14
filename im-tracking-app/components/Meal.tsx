@@ -9,19 +9,29 @@ type Props = PropsWithChildren<{
   foods: FoodItem[];
 }>;
 
-const renderFoodItem = ({ item }: { item: FoodItem }) => (
-  <ThemedView
-    style={{
-      flexDirection: "row",
-      marginBottom: 2,
-      backgroundColor: "#f8f9fa",
-    }}
-  >
-    <ThemedText style={{ width: 100 }}>{item.name}</ThemedText>
-    <ThemedText style={{ width: 120 }}>{item.brand}</ThemedText>
-    <ThemedText style={{ width: 60 }}>{item.calories}</ThemedText>
-  </ThemedView>
-);
+const renderFoodItem = ({ item }: { item: FoodItem }) => {
+  const adjustedCalories = item.servings
+    ? Math.round(item.calories * item.servings)
+    : item.calories;
+  const servingsText = item.servings ? ` ×${item.servings}` : "";
+
+  return (
+    <ThemedView
+      style={{
+        flexDirection: "row",
+        marginBottom: 2,
+        backgroundColor: "#f8f9fa",
+      }}
+    >
+      <ThemedText style={{ width: 100 }}>
+        {item.name}
+        {servingsText}
+      </ThemedText>
+      <ThemedText style={{ width: 120 }}>{item.brand}</ThemedText>
+      <ThemedText style={{ width: 60 }}>{adjustedCalories}</ThemedText>
+    </ThemedView>
+  );
+};
 
 const renderHeader = () => (
   <ThemedView

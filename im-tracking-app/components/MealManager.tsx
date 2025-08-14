@@ -33,13 +33,14 @@ export function MealManager({
     setIsFoodModalVisible(true);
   };
 
-  const handleFoodSelect = (food: FoodItem) => {
+  const handleFoodSelect = (food: FoodItem, servings: number) => {
     if (currentMealId) {
       const currentMeal = meals.find((meal) => meal.id === currentMealId);
       if (currentMeal) {
+        const foodWithServings = { ...food, servings };
         const updatedMeal = {
           ...currentMeal,
-          foods: [...currentMeal.foods, food],
+          foods: [...currentMeal.foods, foodWithServings],
         };
         onUpdateMeal(currentMealId, updatedMeal);
       }
