@@ -20,10 +20,10 @@ export function MacrosOverview() {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.circlesRow}>
         <MacroCircle
-          label="Sodium"
-          value={SODIUM}
-          goal={SODIUM_GOAL}
-          unit="mg"
+          label="Calories"
+          value={CALORIES}
+          goal={CALORIES_GOAL}
+          unit="kcal"
         />
         <MacroCircle
           label="Protein"
@@ -32,10 +32,10 @@ export function MacrosOverview() {
           unit="g"
         />
         <MacroCircle
-          label="Calories"
-          value={CALORIES}
-          goal={CALORIES_GOAL}
-          unit="kcal"
+          label="Sodium"
+          value={SODIUM}
+          goal={SODIUM_GOAL}
+          unit="mg"
         />
       </ThemedView>
     </ThemedView>
