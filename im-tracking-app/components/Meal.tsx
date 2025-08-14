@@ -18,6 +18,7 @@ const renderFoodItem = ({ item }: { item: FoodItem }) => (
     }}
   >
     <ThemedText style={{ width: 100 }}>{item.name}</ThemedText>
+    <ThemedText style={{ width: 120 }}>{item.brand}</ThemedText>
     <ThemedText style={{ width: 60 }}>{item.calories}</ThemedText>
   </ThemedView>
 );
@@ -31,6 +32,7 @@ const renderHeader = () => (
     }}
   >
     <ThemedText style={{ width: 100, fontWeight: "bold" }}>Food</ThemedText>
+    <ThemedText style={{ width: 120, fontWeight: "bold" }}>Brand</ThemedText>
     <ThemedText style={{ width: 60, fontWeight: "bold" }}>Cals</ThemedText>
   </ThemedView>
 );
