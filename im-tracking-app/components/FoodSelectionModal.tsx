@@ -4,13 +4,13 @@ import {
   Pressable,
   StyleSheet,
   FlatList,
-  TextInput,
   Alert,
 } from "react-native";
 import { ThemedView } from "./structure/ThemedView";
 import { ThemedText } from "./structure/ThemedText";
 import { foodItems, FoodItem } from "../data/foods";
 import { useState } from "react";
+import ServingsInputModal from "./ServingsInputModal";
 
 export default function FoodSelectionModal({
   isVisible,
@@ -64,6 +64,10 @@ export default function FoodSelectionModal({
       <ThemedView style={styles.foodItemContent}>
         <ThemedView style={styles.foodInfo}>
           <ThemedText style={styles.foodName}>{item.name}</ThemedText>
+          <ThemedText style={styles.foodBrand}>{item.brand}</ThemedText>
+          <ThemedText style={styles.foodMacros}>
+            Protein: {item.protein}g | Sodium: {item.sodium}mg
+          </ThemedText>
         </ThemedView>
         <ThemedText style={styles.foodCalories}>{item.calories} cal</ThemedText>
       </ThemedView>
@@ -107,74 +111,14 @@ export default function FoodSelectionModal({
         </Pressable>
       </Modal>
 
-      {/* Servings Input Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={isServingModalVisible}
-        onRequestClose={handleCancelServings}
-      >
-        <Pressable style={styles.modalOverlay} onPress={handleCancelServings}>
-          <Pressable onPress={(e) => e.stopPropagation()}>
-            <ThemedView style={styles.servingModalContent}>
-              <ThemedView style={styles.servingModalHeader}>
-                <ThemedText style={styles.servingModalTitle}>
-                  {selectedFood?.name}
-                </ThemedText>
-              </ThemedView>
-
-              <ThemedView style={styles.servingInputContainer}>
-                <ThemedText style={styles.servingLabel}>
-                  Number of Servings:
-                </ThemedText>
-                <TextInput
-                  style={styles.servingInput}
-                  value={servings}
-                  onChangeText={setServings}
-                  keyboardType="decimal-pad"
-                  placeholder="1.00"
-                  placeholderTextColor="#999"
-                  autoFocus={true}
-                />
-                {selectedFood && (
-                  <ThemedView style={styles.servingAmountContainer}>
-                    <ThemedText style={styles.servingAmountText}>
-                      Total Amount:{" "}
-                      {(() => {
-                        const servingsNum = parseFloat(servings);
-                        if (isNaN(servingsNum) || servingsNum <= 0) return "0";
-                        const totalValue = (
-                          servingsNum * selectedFood.servingSize.value
-                        ).toFixed(1);
-                        return `${totalValue} ${selectedFood.servingSize.unit}`;
-                      })()}
-                    </ThemedText>
-                  </ThemedView>
-                )}
-              </ThemedView>
-
-              <ThemedView style={styles.servingModalButtons}>
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={handleCancelServings}
-                >
-                  <ThemedText style={styles.cancelButtonText}>
-                    Cancel
-                  </ThemedText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.confirmButton}
-                  onPress={handleConfirmServings}
-                >
-                  <ThemedText style={styles.confirmButtonText}>
-                    Add Food
-                  </ThemedText>
-                </TouchableOpacity>
-              </ThemedView>
-            </ThemedView>
-          </Pressable>
-        </Pressable>
-      </Modal>
+      <ServingsInputModal
+        isVisible={isServingModalVisible}
+        selectedFood={selectedFood}
+        servings={servings}
+        onServingsChange={setServings}
+        onConfirm={handleConfirmServings}
+        onCancel={handleCancelServings}
+      />
     </>
   );
 }
@@ -254,6 +198,16 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 4,
   },
+  foodBrand: {
+    fontSize: 12,
+    color: "#666",
+    marginBottom: 2,
+  },
+  foodMacros: {
+    fontSize: 11,
+    color: "#888",
+    marginBottom: 2,
+  },
   foodCategory: {
     fontSize: 14,
     color: "#666",
@@ -262,91 +216,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#007AFF",
-  },
-  servingModalContent: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    padding: 20,
-    width: "90%",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 10,
-  },
-  servingModalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e9ecef",
-  },
-  servingModalTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#333",
-  },
-  servingInputContainer: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  servingLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
-  },
-  servingInput: {
-    borderWidth: 1,
-    borderColor: "#e9ecef",
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 18,
-    color: "#333",
-  },
-
-  servingAmountContainer: {
-    marginTop: 10,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: "#e9ecef",
-  },
-  servingAmountText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-  },
-  servingModalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 20,
-  },
-  cancelButton: {
-    backgroundColor: "#f8f9fa",
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderWidth: 1,
-    borderColor: "#e9ecef",
-  },
-  cancelButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#666",
-  },
-  confirmButton: {
-    backgroundColor: "#007AFF",
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-  },
-  confirmButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
 });
