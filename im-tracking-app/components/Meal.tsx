@@ -10,14 +10,26 @@ type Props = PropsWithChildren<{
 }>;
 
 const renderFoodItem = ({ item }: { item: FoodItem }) => (
-  <ThemedView style={{ flexDirection: "row", marginBottom: 2 }}>
+  <ThemedView
+    style={{
+      flexDirection: "row",
+      marginBottom: 2,
+      backgroundColor: "#f8f9fa",
+    }}
+  >
     <ThemedText style={{ width: 100 }}>{item.name}</ThemedText>
     <ThemedText style={{ width: 60 }}>{item.calories}</ThemedText>
   </ThemedView>
 );
 
 const renderHeader = () => (
-  <ThemedView style={{ flexDirection: "row", marginBottom: 4 }}>
+  <ThemedView
+    style={{
+      flexDirection: "row",
+      marginBottom: 4,
+      backgroundColor: "#f8f9fa",
+    }}
+  >
     <ThemedText style={{ width: 100, fontWeight: "bold" }}>Food</ThemedText>
     <ThemedText style={{ width: 60, fontWeight: "bold" }}>Cals</ThemedText>
   </ThemedView>
@@ -26,11 +38,11 @@ const renderHeader = () => (
 export default function Meal({ children, mealName, foods }: Props) {
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.title}>
+      <ThemedView style={[styles.title, { backgroundColor: "#f8f9fa" }]}>
         <ThemedText style={styles.mealName}>{mealName}</ThemedText>
         {children}
       </ThemedView>
-      <ThemedView style={{ flex: 1, marginLeft: 16 }}>
+      <ThemedView style={[styles.foodList, { backgroundColor: "#f8f9fa" }]}>
         {foods.length === 0 ? (
           <ThemedText style={{ color: "#888", fontStyle: "italic" }}>
             No foods added
@@ -43,6 +55,7 @@ export default function Meal({ children, mealName, foods }: Props) {
             ListHeaderComponent={renderHeader}
             showsVerticalScrollIndicator={false}
             scrollEnabled={foods.length > 5}
+            style={{ backgroundColor: "#f8f9fa" }}
           />
         )}
       </ThemedView>
@@ -59,6 +72,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  foodList: {
+    flex: 1,
+    marginLeft: 16,
   },
   mealName: {
     fontSize: 16,
