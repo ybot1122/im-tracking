@@ -13,6 +13,12 @@ const renderFoodItem = ({ item }: { item: FoodItem }) => {
   const adjustedCalories = item.servings
     ? Math.round(item.calories * item.servings)
     : item.calories;
+  const adjustedProtein = item.servings
+    ? Math.round(item.protein * item.servings * 10) / 10
+    : item.protein;
+  const adjustedSodium = item.servings
+    ? Math.round(item.sodium * item.servings)
+    : item.sodium;
   const servingsText = item.servings ? ` ×${item.servings}` : "";
 
   return (
@@ -22,9 +28,13 @@ const renderFoodItem = ({ item }: { item: FoodItem }) => {
           {item.name}
           <ThemedText style={styles.servingsText}>{servingsText}</ThemedText>
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.brandCell}>
         <ThemedText style={styles.brandText}>{item.brand}</ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.proteinCell}>
+        <ThemedText style={styles.proteinText}>{adjustedProtein}g</ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.sodiumCell}>
+        <ThemedText style={styles.sodiumText}>{adjustedSodium}mg</ThemedText>
       </ThemedView>
       <ThemedView style={styles.caloriesCell}>
         <ThemedText style={styles.caloriesText}>{adjustedCalories}</ThemedText>
@@ -38,8 +48,11 @@ const renderHeader = () => (
     <ThemedView style={styles.foodNameCell}>
       <ThemedText style={styles.headerText}>Food</ThemedText>
     </ThemedView>
-    <ThemedView style={styles.brandCell}>
-      <ThemedText style={styles.headerText}>Brand</ThemedText>
+    <ThemedView style={styles.proteinCell}>
+      <ThemedText style={styles.headerText}>🥩</ThemedText>
+    </ThemedView>
+    <ThemedView style={styles.sodiumCell}>
+      <ThemedText style={styles.headerText}>🧂</ThemedText>
     </ThemedView>
     <ThemedView style={styles.caloriesCell}>
       <ThemedText style={styles.headerText}>Cals</ThemedText>
@@ -118,16 +131,15 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   foodTableContainer: {
-    paddingHorizontal: 20,
     paddingVertical: 16,
+    paddingHorizontal: 5,
   },
   tableHeader: {
     flexDirection: "row",
     paddingVertical: 12,
-    paddingHorizontal: 16,
     backgroundColor: "transparent",
     borderRadius: 8,
-    marginBottom: 8,
+    paddingHorizontal: 10,
   },
   headerText: {
     fontSize: 14,
@@ -138,21 +150,24 @@ const styles = StyleSheet.create({
   },
   foodItemRow: {
     flexDirection: "row",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    padding: 12,
     marginBottom: 4,
     backgroundColor: "transparent",
     borderRadius: 8,
-    borderLeftWidth: 3,
-    borderLeftColor: "#e9ecef",
   },
   foodNameCell: {
-    flex: 2,
+    flex: 2.5,
     paddingRight: 12,
   },
-  brandCell: {
-    flex: 1.5,
-    paddingRight: 12,
+  proteinCell: {
+    flex: 0.8,
+    alignItems: "flex-end",
+    paddingRight: 8,
+  },
+  sodiumCell: {
+    flex: 0.8,
+    alignItems: "flex-end",
+    paddingRight: 8,
   },
   caloriesCell: {
     flex: 0.8,
@@ -170,14 +185,27 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   brandText: {
+    fontSize: 12,
+    color: "#6c757d",
+    lineHeight: 16,
+    marginTop: 2,
+  },
+  proteinText: {
     fontSize: 14,
+    fontWeight: "600",
     color: "#495057",
-    lineHeight: 18,
+    textAlign: "right",
+  },
+  sodiumText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#495057",
+    textAlign: "right",
   },
   caloriesText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#e74c3c",
+    color: "#495057",
     textAlign: "right",
   },
   emptyState: {

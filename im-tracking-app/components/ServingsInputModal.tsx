@@ -75,22 +75,6 @@ export default function ServingsInputModal({
                 placeholderTextColor="#999"
                 autoFocus={true}
               />
-
-              {selectedFood && (
-                <ThemedView style={styles.servingAmountContainer}>
-                  <ThemedText style={styles.servingAmountText}>
-                    Total Amount:{" "}
-                    {(() => {
-                      const servingsNum = parseFloat(servings);
-                      if (isNaN(servingsNum) || servingsNum <= 0) return "0";
-                      const totalValue = (
-                        servingsNum * selectedFood.servingSize.value
-                      ).toFixed(1);
-                      return `${totalValue} ${selectedFood.servingSize.unit}`;
-                    })()}
-                  </ThemedText>
-                </ThemedView>
-              )}
             </ThemedView>
 
             {/* Macros Display */}
@@ -128,8 +112,16 @@ export default function ServingsInputModal({
                   </ThemedView>
                 </View>
                 <ThemedText style={styles.macrosNote}>
-                  Per {parseFloat(servings) || 1} serving
-                  {parseFloat(servings) !== 1 ? "s" : ""}
+                  {parseFloat(servings) || 1} serving
+                  {parseFloat(servings) !== 1 ? "s" : ""},{" "}
+                  {(() => {
+                    const servingsNum = parseFloat(servings);
+                    if (isNaN(servingsNum) || servingsNum <= 0) return "0";
+                    const totalValue = (
+                      servingsNum * selectedFood.servingSize.value
+                    ).toFixed(1);
+                    return `${totalValue} ${selectedFood.servingSize.unit}`;
+                  })()}
                 </ThemedText>
               </ThemedView>
             )}
@@ -188,7 +180,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: "#666",
+    color: "#000",
   },
   servingModalTitleContainer: {
     alignItems: "center",
@@ -202,7 +194,7 @@ const styles = StyleSheet.create({
   },
   servingModalSubtitle: {
     fontSize: 14,
-    color: "#666",
+    color: "#000",
     fontStyle: "italic",
   },
   servingInputContainer: {
@@ -226,22 +218,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: "#f8f9fa",
   },
-  servingAmountContainer: {
-    marginTop: 16,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#e9ecef",
-    alignItems: "center",
-  },
-  servingAmountText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-  },
   macrosContainer: {
     marginBottom: 24,
     padding: 20,
-    backgroundColor: "#f8f9fa",
     borderRadius: 16,
     borderWidth: 1,
     borderColor: "#e9ecef",
@@ -257,7 +236,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   macroValue: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "700",
     color: "#007AFF",
     marginBottom: 4,
@@ -265,7 +244,7 @@ const styles = StyleSheet.create({
   macroLabel: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#666",
+    color: "#000",
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },

@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#666",
+    color: "#000",
   },
   foodList: {
     flex: 1,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   },
   foodBrand: {
     fontSize: 12,
-    color: "#666",
+    color: "#000",
     marginBottom: 2,
   },
   foodMacros: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   foodCategory: {
     fontSize: 14,
-    color: "#666",
+    color: "#000",
   },
   foodCalories: {
     fontSize: 16,
