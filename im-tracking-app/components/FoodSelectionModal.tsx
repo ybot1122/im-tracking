@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   Alert,
+  TextInput,
 } from "react-native";
 import { ThemedView } from "./structure/ThemedView";
 import { ThemedText } from "./structure/ThemedText";
@@ -24,6 +25,13 @@ export default function FoodSelectionModal({
   const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
   const [servings, setServings] = useState("1.00");
   const [isServingModalVisible, setIsServingModalVisible] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const filteredFoodItems = foodItems.filter(
+    (item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
+      item.brand.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleFoodSelect = (food: FoodItem) => {
     setSelectedFood(food);
@@ -98,9 +106,26 @@ export default function FoodSelectionModal({
                 <ThemedText style={styles.closeButtonText}>×</ThemedText>
               </TouchableOpacity>
             </ThemedView>
+            <Pressable
+              onPress={(e) => {
+                // Prevent modal overlay from closing when interacting with TextInput
+                e.stopPropagation();
+              }}
+              style={{ width: "100%" }}
+            >
+              <TextInput
+                style={styles.searchBox}
+                placeholder="Search..."
+                placeholderTextColor="#888"
+                value={search}
+                onChangeText={setSearch}
+                autoCorrect={false}
+                autoCapitalize="none"
+              />
+            </Pressable>
 
             <FlatList
-              data={foodItems}
+              data={filteredFoodItems}
               renderItem={renderFoodItem}
               keyExtractor={(item) => item.id}
               style={styles.foodList}
@@ -216,5 +241,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#007AFF",
+  },
+  searchBox: {
+    marginHorizontal: 20,
+    marginTop: 10,
+    marginBottom: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#e9ecef",
+    backgroundColor: "#f8f9fa",
+    fontSize: 16,
+    color: "#333",
   },
 });
