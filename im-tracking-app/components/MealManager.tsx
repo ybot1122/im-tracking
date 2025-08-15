@@ -4,6 +4,7 @@ import { ThemedView } from "./structure/ThemedView";
 import { ThemedText } from "./structure/ThemedText";
 import Meal from "./Meal";
 import FoodSelectionModal from "./FoodSelectionModal";
+import ServingsInputModal from "./ServingsInputModal";
 import { FoodItem } from "@/data/foods";
 
 export interface Meal {
@@ -27,6 +28,11 @@ export function MealManager({
 }: MealManagerProps) {
   const [isFoodModalVisible, setIsFoodModalVisible] = useState(false);
   const [currentMealId, setCurrentMealId] = useState<string | null>(null);
+  // Editing state
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editMealId, setEditMealId] = useState<string | null>(null);
+  const [editFood, setEditFood] = useState<FoodItem | null>(null);
+  const [editServings, setEditServings] = useState("1.00");
 
   const handleLogFood = (mealId: string) => {
     setCurrentMealId(mealId);
@@ -54,6 +60,48 @@ export function MealManager({
     setCurrentMealId(null);
   };
 
+  // --- Editing food servings ---
+  const handleFoodPress = (mealId: string, food: FoodItem) => {
+    setEditMealId(mealId);
+    setEditFood(food);
+    setEditServings(food.servings ? food.servings.toString() : "1.00");
+    setEditModalVisible(true);
+  };
+
+  const handleEditServingsChange = (val: string) => {
+    setEditServings(val);
+  };
+
+  const handleEditConfirm = () => {
+    if (editMealId && editFood) {
+      const meal = meals.find((m) => m.id === editMealId);
+      if (meal) {
+        const servingsNum = parseFloat(editServings);
+        if (isNaN(servingsNum) || servingsNum <= 0) {
+          // Optionally show an alert here
+          setEditModalVisible(false);
+          return;
+        }
+        const updatedFoods = meal.foods.map((f) =>
+          f.id === editFood.id ? { ...f, servings: servingsNum } : f
+        );
+        const updatedMeal = { ...meal, foods: updatedFoods };
+        onUpdateMeal(editMealId, updatedMeal);
+      }
+    }
+    setEditModalVisible(false);
+    setEditMealId(null);
+    setEditFood(null);
+    setEditServings("1.00");
+  };
+
+  const handleEditCancel = () => {
+    setEditModalVisible(false);
+    setEditMealId(null);
+    setEditFood(null);
+    setEditServings("1.00");
+  };
+
   return (
     <ThemedView style={styles.container}>
       {meals.length === 0 ? (
@@ -65,7 +113,12 @@ export function MealManager({
       ) : (
         <ThemedView style={styles.mealsList}>
           {meals.map((meal) => (
-            <Meal key={meal.id} mealName={meal.name} foods={meal.foods}>
+            <Meal
+              key={meal.id}
+              mealName={meal.name}
+              foods={meal.foods}
+              onFoodPress={(food) => handleFoodPress(meal.id, food)}
+            >
               <TouchableOpacity
                 onPress={() => onDeleteMeal(meal.id)}
                 style={styles.deleteButton}
@@ -101,6 +154,17 @@ export function MealManager({
         isVisible={isFoodModalVisible}
         onRequestClose={handleCloseModal}
         onFoodSelect={handleFoodSelect}
+      />
+
+      {/* Servings Edit Modal */}
+      <ServingsInputModal
+        isVisible={editModalVisible}
+        selectedFood={editFood}
+        servings={editServings}
+        onServingsChange={handleEditServingsChange}
+        onConfirm={handleEditConfirm}
+        onCancel={handleEditCancel}
+        confirmText="Update"
       />
     </ThemedView>
   );

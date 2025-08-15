@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList } from "react-native";
+import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { ThemedText } from "./structure/ThemedText";
 import { ThemedView } from "./structure/ThemedView";
 import { PropsWithChildren } from "react";
@@ -7,9 +7,13 @@ import { FoodItem } from "@/data/foods";
 type Props = PropsWithChildren<{
   mealName: string;
   foods: FoodItem[];
+  onFoodPress?: (food: FoodItem) => void;
 }>;
 
-const renderFoodItem = ({ item }: { item: FoodItem }) => {
+const renderFoodItem = (
+  { item }: { item: FoodItem },
+  onFoodPress?: (food: FoodItem) => void
+) => {
   const adjustedCalories = item.servings
     ? Math.round(item.calories * item.servings)
     : item.calories;
@@ -21,7 +25,7 @@ const renderFoodItem = ({ item }: { item: FoodItem }) => {
     : item.sodium;
   const servingsText = item.servings ? ` ×${item.servings}` : "";
 
-  return (
+  const content = (
     <ThemedView style={styles.foodItemRow}>
       <ThemedView style={styles.foodNameCell}>
         <ThemedText style={styles.foodNameText}>
@@ -41,6 +45,15 @@ const renderFoodItem = ({ item }: { item: FoodItem }) => {
       </ThemedView>
     </ThemedView>
   );
+
+  if (onFoodPress) {
+    return (
+      <TouchableOpacity onPress={() => onFoodPress(item)} activeOpacity={0.7}>
+        {content}
+      </TouchableOpacity>
+    );
+  }
+  return content;
 };
 
 const renderHeader = () => (
@@ -60,7 +73,12 @@ const renderHeader = () => (
   </ThemedView>
 );
 
-export default function Meal({ children, mealName, foods }: Props) {
+export default function Meal({
+  children,
+  mealName,
+  foods,
+  onFoodPress,
+}: Props) {
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.mealCard}>
@@ -79,7 +97,7 @@ export default function Meal({ children, mealName, foods }: Props) {
           ) : (
             <FlatList
               data={foods}
-              renderItem={renderFoodItem}
+              renderItem={(props) => renderFoodItem(props, onFoodPress)}
               keyExtractor={(item) => item.id}
               ListHeaderComponent={renderHeader}
               showsVerticalScrollIndicator={false}

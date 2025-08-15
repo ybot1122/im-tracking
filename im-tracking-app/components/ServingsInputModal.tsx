@@ -18,6 +18,7 @@ interface ServingsInputModalProps {
   onServingsChange: (servings: string) => void;
   onConfirm: () => void;
   onCancel: () => void;
+  confirmText?: string; // Add this prop
 }
 
 export default function ServingsInputModal({
@@ -27,6 +28,7 @@ export default function ServingsInputModal({
   onServingsChange,
   onConfirm,
   onCancel,
+  confirmText = "Add Food", // Default value
 }: ServingsInputModalProps) {
   const getMacroValues = (food: FoodItem, servingsNum: number) => {
     if (isNaN(servingsNum) || servingsNum <= 0)
@@ -132,7 +134,7 @@ export default function ServingsInputModal({
                 onPress={onConfirm}
               >
                 <ThemedText style={styles.confirmButtonText}>
-                  Add Food
+                  {confirmText}
                 </ThemedText>
               </TouchableOpacity>
             </ThemedView>
