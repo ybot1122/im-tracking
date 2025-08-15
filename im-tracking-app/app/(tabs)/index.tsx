@@ -4,7 +4,7 @@ import ParallaxScrollView from "@/components/structure/ParallaxScrollView";
 import MacrosOverview from "@/components/MacrosOverview";
 import DayPicker from "@/components/DayPicker";
 import MealManager from "@/components/MealManager";
-import { useMeals } from "../_layout";
+import { useMeals } from "../../context/MealsContext";
 
 // Helper function to create a date key for storage
 function getDateKey(date: Date): string {
