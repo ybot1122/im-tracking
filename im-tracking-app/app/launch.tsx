@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { ThemedText } from "@/components/structure/ThemedText";
 import { ThemedView } from "@/components/structure/ThemedView";
-import { Link } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "expo-router";
+import Spinner from "@/components/ui/Spinner";
 
 export default function LaunchScreen() {
   const [loading, setLoading] = useState(false);
@@ -29,22 +29,14 @@ export default function LaunchScreen() {
         resizeMode="contain"
       />
       <ThemedText type="title" style={styles.title}>
-        Welcome to IM Tracking
+        I'm Tracking
       </ThemedText>
       <ThemedText style={styles.subtitle}>
         Please login or create an account to continue.
       </ThemedText>
       <View style={styles.buttonContainer}>
         {loading ? (
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Image
-              source={require("../assets/images/spinner.gif")}
-              style={{ width: 32, height: 32 }}
-              accessibilityLabel="Loading"
-            />
-          </View>
+          <Spinner />
         ) : (
           <>
             <ThemedText type="link" style={styles.button} onPress={handleAuth}>
@@ -87,6 +79,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#0a7ea4",
+    color: "#fff",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
