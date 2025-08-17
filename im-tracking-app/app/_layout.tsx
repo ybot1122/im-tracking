@@ -11,6 +11,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { MealsProvider } from "@/context/MealsContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -24,14 +25,19 @@ export default function RootLayout() {
   }
 
   return (
-    <MealsProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </MealsProvider>
+    <AuthProvider>
+      <MealsProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="launch" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </MealsProvider>
+    </AuthProvider>
   );
 }
